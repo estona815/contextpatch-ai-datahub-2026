@@ -1,0 +1,27 @@
+{
+  "mode": "recorded-datahub-context-replay",
+  "synthetic": true,
+  "mcpTools": ["get_lineage", "get_lineage_paths_between"],
+  "entities": {
+    "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)": {"displayName": "raw_dsp_settlements", "type": "dataset", "owner": "Royalty Data Team", "domain": "Music Royalty", "criticality": "critical", "canonicalFields": ["artist_share", "net_amount"]},
+    "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)": {"displayName": "stg_dsp_streams", "type": "dataset", "owner": "Royalty Data Team", "domain": "Music Royalty", "criticality": "high", "canonicalFields": ["artist_share", "net_amount"]},
+    "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)": {"displayName": "int_royalty_calculation", "type": "dataset", "owner": "Royalty Data Team", "domain": "Music Royalty", "criticality": "critical", "canonicalFields": ["artist_payout_amount"]},
+    "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)": {"displayName": "royalty_ledger", "type": "dataset", "owner": "Finance Operations", "domain": "Finance", "criticality": "critical", "canonicalFields": ["artist_payout_amount"]},
+    "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)": {"displayName": "artist_monthly_payout", "type": "dataset", "owner": "Creator Payments Team", "domain": "Creator Payments", "criticality": "critical", "canonicalFields": ["monthly_payout_amount"]},
+    "urn:li:dashboard:(looker,finance_reconciliation_dashboard)": {"displayName": "finance_reconciliation_dashboard", "type": "dashboard", "owner": "Finance Operations", "domain": "Finance", "criticality": "critical", "canonicalFields": ["monthly_payout_amount"]},
+    "urn:li:dataJob:(synthetic,payout_csv_export)": {"displayName": "payout_csv_export", "type": "dataJob", "owner": "Creator Payments Team", "domain": "Creator Payments", "criticality": "high", "canonicalFields": ["net_amount"]},
+    "urn:li:dataJob:(synthetic,artist_statement_generator)": {"displayName": "artist_statement_generator", "type": "dataJob", "owner": "Creator Payments Team", "domain": "Creator Payments", "criticality": "high", "canonicalFields": ["artist_payout_amount"]},
+    "urn:li:mlFeature:(synthetic,revenue_forecast_feature)": {"displayName": "revenue_forecast_feature", "type": "mlFeature", "owner": "Unassigned", "domain": "Music Royalty", "criticality": "normal", "canonicalFields": ["net_amount"]}
+  },
+  "edges": [
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)", "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)", "fields": ["artist_share", "net_amount", "rights_split_pct", "payable_revenue"], "evidenceId": "ev-lineage-raw-stg"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)", "target": "urn:li:dataJob:(synthetic,payout_csv_export)", "fields": ["net_amount", "payable_revenue"], "evidenceId": "ev-lineage-raw-export"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)", "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)", "fields": ["artist_share", "net_amount"], "evidenceId": "ev-lineage-stg-int"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)", "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)", "fields": ["artist_payout_amount"], "evidenceId": "ev-lineage-int-ledger"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)", "target": "urn:li:dataJob:(synthetic,artist_statement_generator)", "fields": ["artist_payout_amount"], "evidenceId": "ev-lineage-int-statement"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)", "target": "urn:li:mlFeature:(synthetic,revenue_forecast_feature)", "fields": ["net_amount"], "evidenceId": "ev-lineage-int-forecast"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)", "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)", "fields": ["artist_payout_amount"], "evidenceId": "ev-lineage-ledger-payout"},
+    {"source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)", "target": "urn:li:dashboard:(looker,finance_reconciliation_dashboard)", "fields": ["monthly_payout_amount"], "evidenceId": "ev-lineage-payout-dashboard"}
+  ]
+}
+

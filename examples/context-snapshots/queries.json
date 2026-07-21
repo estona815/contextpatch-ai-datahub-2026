@@ -1,0 +1,11 @@
+{
+  "mode": "recorded-datahub-context-replay",
+  "synthetic": true,
+  "tool": "get_dataset_queries",
+  "queries": [
+    {"id": "query-001", "sql": "select reporting_month, sum(net_amount) from synthetic.raw_dsp_settlements group by 1", "purpose": "Finance reconciliation"},
+    {"id": "query-002", "sql": "select artist_id, sum(net_amount * artist_share) from synthetic.raw_dsp_settlements group by 1", "purpose": "Artist payout preview"},
+    {"id": "query-003", "sql": "select territory_code, sum(net_amount) from synthetic.raw_dsp_settlements group by 1", "purpose": "Territory review"}
+  ]
+}
+

@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contextpatch.example/schemas/contextpatch.schema.json",
+  "title": "ContextPatch Contracts",
+  "$ref": "#/$defs/ReplayOutcome",
+  "$defs": {
+    "IncidentReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["incidentId", "title", "description", "reportedAt", "environment", "sourceAssetHint", "observedSymptoms", "suspectedChange", "repositoryPath", "requestedActions", "constraints", "reporter", "status"],
+      "properties": {
+        "incidentId": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "reportedAt": {"type": "string", "format": "date-time"},
+        "environment": {"type": "string"},
+        "sourceAssetHint": {"type": "string"},
+        "observedSymptoms": {"type": "array", "items": {"type": "string"}},
+        "suspectedChange": {"type": "string"},
+        "repositoryPath": {"type": "string"},
+        "requestedActions": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array", "items": {"type": "string"}},
+        "reporter": {"type": "string"},
+        "status": {"type": "string"},
+        "synthetic": {"type": "boolean"}
+      }
+    },
+    "SchemaFieldSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetUrn", "fieldPath", "nativeType", "nullable", "description", "tags", "glossaryTerms", "sampleValues", "observedRange", "snapshotVersion", "capturedAt", "provenance"],
+      "properties": {
+        "assetUrn": {"type": "string"},
+        "fieldPath": {"type": "string"},
+        "nativeType": {"type": "string"},
+        "nullable": {"type": "boolean"},
+        "description": {"type": "string"},
+        "tags": {"type": "array", "items": {"type": "string"}},
+        "glossaryTerms": {"type": "array", "items": {"type": "string"}},
+        "sampleValues": {"type": "array"},
+        "observedRange": {"type": ["object", "null"], "properties": {"min": {"type": "number"}, "max": {"type": "number"}}, "required": ["min", "max"]},
+        "snapshotVersion": {"type": "string"},
+        "capturedAt": {"type": "string", "format": "date-time"},
+        "provenance": {"type": "string"}
+      }
+    },
+    "SchemaChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["changeId", "oldField", "newField", "changeType", "nameSimilarity", "semanticSimilarity", "typeCompatibility", "unitCompatibility", "evidence", "assumptions", "confidence", "requiresHumanConfirmation"],
+      "properties": {
+        "changeId": {"type": "string"},
+        "oldField": {"type": "string"},
+        "newField": {"type": "string"},
+        "changeType": {"enum": ["rename", "typeChange", "unitChange", "nullableChange", "split", "merge", "removed", "added", "semanticChange", "unknown"]},
+        "nameSimilarity": {"type": "number", "minimum": 0, "maximum": 1},
+        "semanticSimilarity": {"type": "number", "minimum": 0, "maximum": 1},
+        "typeCompatibility": {"type": "string"},
+        "unitCompatibility": {"type": "string"},
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "requiresHumanConfirmation": {"type": "boolean"}
+      }
+    },
+    "ImpactedAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["urn", "displayName", "assetType", "impactLevel", "impactReason", "impactedFields", "lineageDistance", "owner", "businessCriticality", "evidenceReferences", "recommendedAction"],
+      "properties": {
+        "urn": {"type": "string"},
+        "displayName": {"type": "string"},
+        "assetType": {"type": "string"},
+        "impactLevel": {"enum": ["direct", "indirect", "possible", "informational"]},
+        "impactReason": {"type": "string"},
+        "impactedFields": {"type": "array", "items": {"type": "string"}},
+        "lineageDistance": {"type": "integer", "minimum": 0},
+        "owner": {"type": "string"},
+        "businessCriticality": {"type": "string"},
+        "evidenceReferences": {"type": "array", "items": {"type": "string"}},
+        "recommendedAction": {"type": "string"}
+      }
+    },
+    "ImpactGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "edges", "criticalPaths", "affectedOwners", "affectedDomains", "blastRadius", "unresolvedAssets", "evidenceCoverage"],
+      "properties": {
+        "nodes": {"type": "array", "items": {"$ref": "#/$defs/ImpactedAsset"}},
+        "edges": {"type": "array", "items": {"type": "object"}},
+        "criticalPaths": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+        "affectedOwners": {"type": "array", "items": {"type": "string"}},
+        "affectedDomains": {"type": "array", "items": {"type": "string"}},
+        "blastRadius": {"type": "object", "required": ["direct", "indirect", "total"], "properties": {"direct": {"type": "integer"}, "indirect": {"type": "integer"}, "total": {"type": "integer"}}},
+        "unresolvedAssets": {"type": "array", "items": {"type": "string"}},
+        "evidenceCoverage": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "PatchFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "operation", "language", "purpose", "relatedAssets", "evidenceReferences", "originalHash", "proposedContent", "diff", "validationCommands"],
+      "properties": {
+        "path": {"type": "string"},
+        "operation": {"enum": ["create", "modify", "delete"]},
+        "language": {"type": "string"},
+        "purpose": {"type": "string"},
+        "relatedAssets": {"type": "array", "items": {"type": "string"}},
+        "evidenceReferences": {"type": "array", "items": {"type": "string"}},
+        "originalHash": {"type": "string"},
+        "proposedContent": {"type": "string"},
+        "diff": {"type": "string"},
+        "validationCommands": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "PatchPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["patchId", "incidentId", "summary", "strategy", "assumptions", "files", "commands", "validationPlan", "rollbackPlan", "writeBackPlan", "unresolvedQuestions", "riskLevel", "confidence", "requiresApproval"],
+      "properties": {
+        "patchId": {"type": "string"},
+        "incidentId": {"type": "string"},
+        "summary": {"type": "string"},
+        "strategy": {"type": "string"},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "files": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/PatchFile"}},
+        "commands": {"type": "array", "items": {"type": "string"}},
+        "validationPlan": {"type": "array", "items": {"type": "string"}},
+        "rollbackPlan": {"type": "array", "items": {"type": "string"}},
+        "writeBackPlan": {"type": "object"},
+        "unresolvedQuestions": {"type": "array", "items": {"type": "string"}},
+        "riskLevel": {"type": "string"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "requiresApproval": {"const": true}
+      }
+    },
+    "ValidationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "passed", "detail"],
+      "properties": {"name": {"type": "string"}, "passed": {"type": "boolean"}, "detail": {"type": "string"}}
+    },
+    "ValidationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validationId", "patchId", "checks", "passed", "failedChecks", "warnings", "dataComparison", "startedAt", "completedAt", "logs", "repairAttempted", "finalStatus"],
+      "properties": {
+        "validationId": {"type": "string"},
+        "patchId": {"type": "string"},
+        "checks": {"type": "array", "items": {"$ref": "#/$defs/ValidationCheck"}},
+        "passed": {"type": "boolean"},
+        "failedChecks": {"type": "array", "items": {"type": "string"}},
+        "warnings": {"type": "array", "items": {"type": "string"}},
+        "dataComparison": {"type": "object"},
+        "startedAt": {"type": "string", "format": "date-time"},
+        "completedAt": {"type": "string", "format": "date-time"},
+        "logs": {"type": "array", "items": {"type": "string"}},
+        "repairAttempted": {"type": "boolean"},
+        "finalStatus": {"enum": ["passed", "blocked"]}
+      }
+    },
+    "WriteBackPlan": {
+      "type": "object",
+      "required": ["mode", "requiresApproval", "approved", "affectedUrns", "operations", "patchId", "validationStatus", "executionResults", "note"],
+      "properties": {
+        "mode": {"type": "string"},
+        "requiresApproval": {"const": true},
+        "approved": {"type": "boolean"},
+        "affectedUrns": {"type": "array", "items": {"type": "string"}},
+        "operations": {"type": "array", "items": {"type": "object"}},
+        "patchId": {"type": "string"},
+        "validationStatus": {"type": "string"},
+        "executionResults": {"type": "array"},
+        "note": {"type": "string"}
+      }
+    },
+    "AgentTraceEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["traceId", "timestamp", "stage", "tool", "requestSummary", "responseSummary", "evidenceIds", "decision", "result", "durationMs", "error", "fallbackUsed"],
+      "properties": {
+        "traceId": {"type": "string"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "stage": {"type": "string"},
+        "tool": {"type": "string"},
+        "requestSummary": {"type": "string"},
+        "responseSummary": {"type": "string"},
+        "evidenceIds": {"type": "array", "items": {"type": "string"}},
+        "decision": {"type": "string"},
+        "result": {"type": "string"},
+        "durationMs": {"type": "integer", "minimum": 0},
+        "error": {"type": ["string", "null"]},
+        "fallbackUsed": {"type": "boolean"}
+      }
+    },
+    "ContextBundle": {
+      "type": "object",
+      "required": ["incident", "sourceAssets", "schemas", "upstreamAssets", "downstreamAssets", "lineagePaths", "owners", "tags", "glossaryTerms", "descriptions", "qualitySignals", "sampleQueries", "repositoryReferences", "contracts", "contextDocuments", "retrievedAt", "mcpCalls", "warnings"],
+      "properties": {
+        "incident": {"$ref": "#/$defs/IncidentReport"},
+        "sourceAssets": {"type": "array"},
+        "schemas": {"type": "array"},
+        "upstreamAssets": {"type": "array"},
+        "downstreamAssets": {"type": "array"},
+        "lineagePaths": {"type": "array"},
+        "owners": {"type": "array"},
+        "tags": {"type": "array"},
+        "glossaryTerms": {"type": "array"},
+        "descriptions": {"type": "array"},
+        "qualitySignals": {"type": "array"},
+        "sampleQueries": {"type": "array"},
+        "repositoryReferences": {"type": "array"},
+        "contracts": {"type": "array"},
+        "contextDocuments": {"type": "array"},
+        "retrievedAt": {"type": "string", "format": "date-time"},
+        "mcpCalls": {"type": "array"},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "ReplayOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "incident", "schemaChanges", "impactGraph", "patchPlan", "validation", "trace", "writeBackPreview", "warnings"],
+      "properties": {
+        "mode": {"const": "replay"},
+        "incident": {"$ref": "#/$defs/IncidentReport"},
+        "schemaChanges": {"type": "array", "items": {"$ref": "#/$defs/SchemaChange"}},
+        "impactGraph": {"$ref": "#/$defs/ImpactGraph"},
+        "patchPlan": {"$ref": "#/$defs/PatchPlan"},
+        "validation": {"$ref": "#/$defs/ValidationResult"},
+        "trace": {"type": "array", "items": {"$ref": "#/$defs/AgentTraceEvent"}},
+        "writeBackPreview": {"$ref": "#/$defs/WriteBackPlan"},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
+

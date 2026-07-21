@@ -1,0 +1,18 @@
+{
+  "name": "contextpatch-ai",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "demo": "pnpm --filter @contextpatch/web dev",
+    "dev": "pnpm --filter @contextpatch/web dev",
+    "build": "pnpm --filter @contextpatch/web build",
+    "lint": "pnpm --filter @contextpatch/web lint",
+    "typecheck": "pnpm --filter @contextpatch/web typecheck",
+    "test": "pnpm --filter @contextpatch/web test",
+    "test:python": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=services/agent python3 -m unittest discover -s services/agent/tests -v",
+    "evaluate": ".venv/bin/python scripts/evaluate/run_incident_suite.py --repository-root . && .venv/bin/python scripts/evaluate/run_context_ablation.py --repository-root .",
+    "examples": ".venv/bin/python scripts/demo/export_examples.py --repository-root ."
+  }
+}

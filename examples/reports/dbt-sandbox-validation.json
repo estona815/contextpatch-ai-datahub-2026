@@ -1,0 +1,31 @@
+{
+  "mode": "replay",
+  "synthetic": true,
+  "validatedAt": "2026-07-21T18:42:42+09:00",
+  "environment": {
+    "dbtCore": "1.12.0",
+    "dbtDuckdb": "1.10.1",
+    "duckdb": "1.5.4"
+  },
+  "boundary": "Generated files were applied only to an ignored local sandbox; repository source files and DataHub were not mutated.",
+  "commands": [
+    "dbt seed --profiles-dir . --full-refresh",
+    "dbt build --profiles-dir ."
+  ],
+  "dbtBuild": {
+    "seeds": 3,
+    "models": 4,
+    "dataTests": 9,
+    "pass": 16,
+    "warn": 0,
+    "error": 0,
+    "skip": 0,
+    "status": "passed"
+  },
+  "warehouseCheck": {
+    "stagedRows": 6,
+    "validRows": 6,
+    "payableTotal": "720.00",
+    "artistPayoutTotal": "472.00"
+  }
+}

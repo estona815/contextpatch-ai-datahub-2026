@@ -1,0 +1,20 @@
+{
+  "mode": "recorded-replay",
+  "serverVersionRepresented": "0.6.0",
+  "discoveredAt": "2026-07-18T10:24:30Z",
+  "source": "recorded capability snapshot; not a live MCP handshake",
+  "readTools": [
+    "search",
+    "get_entities",
+    "list_schema_fields",
+    "get_lineage",
+    "get_lineage_paths_between",
+    "get_dataset_queries"
+  ],
+  "mutationTools": [],
+  "mutationEnabled": false,
+  "warnings": [
+    "Replay Mode never assumes a mutation tool exists.",
+    "Full Mode must replace this snapshot with runtime capability discovery."
+  ]
+}

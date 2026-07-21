@@ -1,0 +1,20 @@
+{
+  "incidentId": "inc-2026-07-dsp-001",
+  "title": "July DSP payouts dropped sharply after a schema change",
+  "description": "Investigate the synthetic payout drop, trace downstream impact, and prepare a safe patch without changing production systems.",
+  "reportedAt": "2026-07-18T10:24:31Z",
+  "environment": "synthetic-replay",
+  "sourceAssetHint": "raw_dsp_settlements",
+  "observedSymptoms": [
+    "Artist payout totals fell after the July provider file arrived.",
+    "The legacy staging model no longer finds artist_share or net_amount."
+  ],
+  "suspectedChange": "artist_share and net_amount were replaced by rights_split_pct and payable_revenue; share units may have changed.",
+  "repositoryPath": "data-stack/dbt",
+  "requestedActions": ["analyze-impact", "generate-patch", "validate", "prepare-write-back"],
+  "constraints": ["synthetic-data-only", "no-external-api", "approval-required", "no-delete"],
+  "reporter": "Synthetic Demo Operator",
+  "status": "investigating",
+  "synthetic": true
+}
+

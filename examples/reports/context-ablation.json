@@ -1,0 +1,77 @@
+{
+  "synthetic": true,
+  "generatedAt": "2026-07-21T18:40:00+09:00",
+  "experiment": "DataHub context ablation for inc-2026-07-dsp-001",
+  "groundTruth": {
+    "schemaMappings": 2,
+    "downstreamAssets": 8,
+    "patchFiles": 8
+  },
+  "modes": [
+    {
+      "mode": "no-context",
+      "inputsActuallyUsed": [
+        "incident report"
+      ],
+      "schemaMappingsFound": 0,
+      "schemaMappingRecall": 0,
+      "impactedAssetsFound": 0,
+      "impactedAssetRecall": 0,
+      "missingDownstreamAssets": 8,
+      "ownersResolved": 0,
+      "generatedFiles": 0,
+      "generatedFileCompleteness": 0,
+      "dbtCompile": "not-run-no-patch",
+      "dbtTests": "not-run-no-patch"
+    },
+    {
+      "mode": "schema-context",
+      "inputsActuallyUsed": [
+        "incident report",
+        "recorded schema versions",
+        "descriptions",
+        "glossary terms",
+        "observed ranges"
+      ],
+      "schemaMappingsFound": 2,
+      "schemaMappingRecall": 1.0,
+      "impactedAssetsFound": 0,
+      "impactedAssetRecall": 0,
+      "missingDownstreamAssets": 8,
+      "ownersResolved": 0,
+      "generatedFiles": 0,
+      "generatedFileCompleteness": 0,
+      "dbtCompile": "not-run-insufficient-lineage",
+      "dbtTests": "not-run-insufficient-lineage"
+    },
+    {
+      "mode": "full-recorded-datahub-context",
+      "inputsActuallyUsed": [
+        "incident report",
+        "schema",
+        "lineage",
+        "entities",
+        "owners",
+        "queries",
+        "descriptions",
+        "glossary terms"
+      ],
+      "schemaMappingsFound": 2,
+      "schemaMappingRecall": 1.0,
+      "impactedAssetsFound": 8,
+      "impactedAssetRecall": 1.0,
+      "missingDownstreamAssets": 0,
+      "ownersResolved": 3,
+      "generatedFiles": 8,
+      "generatedFileCompleteness": 1.0,
+      "dbtCompile": "passed-in-isolated-sandbox",
+      "dbtTests": "9 passed"
+    }
+  ],
+  "interpretation": "Schema context recovers field mappings, but recorded lineage and ownership are required to identify downstream assets and create the complete bounded patch plan.",
+  "notMeasured": [
+    "subjective explanation quality",
+    "live DataHub latency",
+    "live model cost"
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "contextSnapshot": "recorded-datahub-context-replay",
+  "generatedAt": "2026-07-18T10:25:02Z",
+  "generatedBy": "contextpatch-deterministic-mock-v1",
+  "impactGraph": {
+    "affectedDomains": [
+      "Creator Payments",
+      "Finance",
+      "Music Royalty"
+    ],
+    "affectedOwners": [
+      "Creator Payments Team",
+      "Finance Operations",
+      "Royalty Data Team"
+    ],
+    "blastRadius": {
+      "direct": 2,
+      "indirect": 6,
+      "total": 8
+    },
+    "criticalPaths": [
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+        "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      ]
+    ],
+    "edges": [
+      {
+        "evidenceId": "ev-lineage-raw-stg",
+        "fields": [
+          "artist_share",
+          "net_amount",
+          "rights_split_pct",
+          "payable_revenue"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-raw-export",
+        "fields": [
+          "net_amount",
+          "payable_revenue"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "target": "urn:li:dataJob:(synthetic,payout_csv_export)"
+      },
+      {
+        "evidenceId": "ev-lineage-stg-int",
+        "fields": [
+          "artist_share",
+          "net_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-ledger",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-statement",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:dataJob:(synthetic,artist_statement_generator)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-forecast",
+        "fields": [
+          "net_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+      },
+      {
+        "evidenceId": "ev-lineage-ledger-payout",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-payout-dashboard",
+        "fields": [
+          "monthly_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+        "target": "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      }
+    ],
+    "evidenceCoverage": 1.0,
+    "nodes": [
+      {
+        "assetType": "dataJob",
+        "businessCriticality": "high",
+        "displayName": "payout_csv_export",
+        "evidenceReferences": [
+          "ev-lineage-raw-export"
+        ],
+        "impactLevel": "direct",
+        "impactReason": "Directly references a changed provider field.",
+        "impactedFields": [
+          "artist_share",
+          "net_amount",
+          "payable_revenue",
+          "rights_split_pct"
+        ],
+        "lineageDistance": 1,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Patch and test field mapping.",
+        "urn": "urn:li:dataJob:(synthetic,payout_csv_export)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "high",
+        "displayName": "stg_dsp_streams",
+        "evidenceReferences": [
+          "ev-lineage-raw-stg"
+        ],
+        "impactLevel": "direct",
+        "impactReason": "Directly references a changed provider field.",
+        "impactedFields": [
+          "artist_share",
+          "net_amount",
+          "payable_revenue",
+          "rights_split_pct"
+        ],
+        "lineageDistance": 1,
+        "owner": "Royalty Data Team",
+        "recommendedAction": "Patch and test field mapping.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "int_royalty_calculation",
+        "evidenceReferences": [
+          "ev-lineage-stg-int"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 2,
+        "owner": "Royalty Data Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      },
+      {
+        "assetType": "dataJob",
+        "businessCriticality": "high",
+        "displayName": "artist_statement_generator",
+        "evidenceReferences": [
+          "ev-lineage-int-statement"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataJob:(synthetic,artist_statement_generator)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "royalty_ledger",
+        "evidenceReferences": [
+          "ev-lineage-int-ledger"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Finance Operations",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      },
+      {
+        "assetType": "mlFeature",
+        "businessCriticality": "normal",
+        "displayName": "revenue_forecast_feature",
+        "evidenceReferences": [
+          "ev-lineage-int-forecast"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "net_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Unassigned",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "artist_monthly_payout",
+        "evidenceReferences": [
+          "ev-lineage-ledger-payout"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "monthly_payout_amount"
+        ],
+        "lineageDistance": 4,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      },
+      {
+        "assetType": "dashboard",
+        "businessCriticality": "critical",
+        "displayName": "finance_reconciliation_dashboard",
+        "evidenceReferences": [
+          "ev-lineage-payout-dashboard"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "monthly_payout_amount"
+        ],
+        "lineageDistance": 5,
+        "owner": "Finance Operations",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      }
+    ],
+    "unresolvedAssets": [
+      "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+    ]
+  },
+  "sourceIncident": "inc-2026-07-dsp-001",
+  "synthetic": true,
+  "validationStatus": "passed"
+}

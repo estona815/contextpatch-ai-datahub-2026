@@ -1,0 +1,9 @@
+{
+  "mode": "recorded-datahub-context-replay",
+  "synthetic": true,
+  "tool": "get_entities",
+  "entities": [
+    {"urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)", "owners": ["Royalty Data Team"], "domain": "Music Royalty", "tags": ["External Schema", "Payout Critical", "Synthetic Demo"], "description": "Synthetic DSP settlement source used only for this demo."}
+  ]
+}
+

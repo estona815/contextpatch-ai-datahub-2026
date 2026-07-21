@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contextpatch-agent"
+version = "0.1.0"
+description = "Deterministic replay and patch validation core for ContextPatch AI"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+dependencies = []
+
+[project.optional-dependencies]
+validation = ["jsonschema==4.26.0"]
+dbt = ["dbt-core==1.12.0", "dbt-duckdb==1.10.1", "duckdb==1.5.4"]
+dev = ["jsonschema==4.26.0", "dbt-core==1.12.0", "dbt-duckdb==1.10.1", "duckdb==1.5.4"]
+
+[project.scripts]
+contextpatch = "contextpatch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["contextpatch*"]

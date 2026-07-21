@@ -1,0 +1,21 @@
+# Optional Full Mode recipe — not executed in the keyless Replay build.
+source:
+  type: postgres
+  config:
+    host_port: "${POSTGRES_HOST_PORT}"
+    database: "${POSTGRES_DATABASE}"
+    username: "${POSTGRES_USERNAME}"
+    password: "${POSTGRES_PASSWORD}"
+    schema_pattern:
+      allow:
+        - "public"
+    profiling:
+      enabled: false
+    stateful_ingestion:
+      enabled: true
+
+sink:
+  type: datahub-rest
+  config:
+    server: "${DATAHUB_GMS_URL}"
+    token: "${DATAHUB_GMS_TOKEN}"

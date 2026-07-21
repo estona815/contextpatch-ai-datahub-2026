@@ -1,0 +1,838 @@
+{
+  "impactGraph": {
+    "affectedDomains": [
+      "Creator Payments",
+      "Finance",
+      "Music Royalty"
+    ],
+    "affectedOwners": [
+      "Creator Payments Team",
+      "Finance Operations",
+      "Royalty Data Team"
+    ],
+    "blastRadius": {
+      "direct": 2,
+      "indirect": 6,
+      "total": 8
+    },
+    "criticalPaths": [
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      ],
+      [
+        "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+        "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      ]
+    ],
+    "edges": [
+      {
+        "evidenceId": "ev-lineage-raw-stg",
+        "fields": [
+          "artist_share",
+          "net_amount",
+          "rights_split_pct",
+          "payable_revenue"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-raw-export",
+        "fields": [
+          "net_amount",
+          "payable_revenue"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "target": "urn:li:dataJob:(synthetic,payout_csv_export)"
+      },
+      {
+        "evidenceId": "ev-lineage-stg-int",
+        "fields": [
+          "artist_share",
+          "net_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-ledger",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-statement",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:dataJob:(synthetic,artist_statement_generator)"
+      },
+      {
+        "evidenceId": "ev-lineage-int-forecast",
+        "fields": [
+          "net_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+        "target": "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+      },
+      {
+        "evidenceId": "ev-lineage-ledger-payout",
+        "fields": [
+          "artist_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      },
+      {
+        "evidenceId": "ev-lineage-payout-dashboard",
+        "fields": [
+          "monthly_payout_amount"
+        ],
+        "source": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+        "target": "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      }
+    ],
+    "evidenceCoverage": 1.0,
+    "nodes": [
+      {
+        "assetType": "dataJob",
+        "businessCriticality": "high",
+        "displayName": "payout_csv_export",
+        "evidenceReferences": [
+          "ev-lineage-raw-export"
+        ],
+        "impactLevel": "direct",
+        "impactReason": "Directly references a changed provider field.",
+        "impactedFields": [
+          "artist_share",
+          "net_amount",
+          "payable_revenue",
+          "rights_split_pct"
+        ],
+        "lineageDistance": 1,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Patch and test field mapping.",
+        "urn": "urn:li:dataJob:(synthetic,payout_csv_export)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "high",
+        "displayName": "stg_dsp_streams",
+        "evidenceReferences": [
+          "ev-lineage-raw-stg"
+        ],
+        "impactLevel": "direct",
+        "impactReason": "Directly references a changed provider field.",
+        "impactedFields": [
+          "artist_share",
+          "net_amount",
+          "payable_revenue",
+          "rights_split_pct"
+        ],
+        "lineageDistance": 1,
+        "owner": "Royalty Data Team",
+        "recommendedAction": "Patch and test field mapping.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "int_royalty_calculation",
+        "evidenceReferences": [
+          "ev-lineage-stg-int"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 2,
+        "owner": "Royalty Data Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)"
+      },
+      {
+        "assetType": "dataJob",
+        "businessCriticality": "high",
+        "displayName": "artist_statement_generator",
+        "evidenceReferences": [
+          "ev-lineage-int-statement"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataJob:(synthetic,artist_statement_generator)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "royalty_ledger",
+        "evidenceReferences": [
+          "ev-lineage-int-ledger"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "artist_payout_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Finance Operations",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)"
+      },
+      {
+        "assetType": "mlFeature",
+        "businessCriticality": "normal",
+        "displayName": "revenue_forecast_feature",
+        "evidenceReferences": [
+          "ev-lineage-int-forecast"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "net_amount"
+        ],
+        "lineageDistance": 3,
+        "owner": "Unassigned",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+      },
+      {
+        "assetType": "dataset",
+        "businessCriticality": "critical",
+        "displayName": "artist_monthly_payout",
+        "evidenceReferences": [
+          "ev-lineage-ledger-payout"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "monthly_payout_amount"
+        ],
+        "lineageDistance": 4,
+        "owner": "Creator Payments Team",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)"
+      },
+      {
+        "assetType": "dashboard",
+        "businessCriticality": "critical",
+        "displayName": "finance_reconciliation_dashboard",
+        "evidenceReferences": [
+          "ev-lineage-payout-dashboard"
+        ],
+        "impactLevel": "indirect",
+        "impactReason": "Consumes output from an impacted downstream path.",
+        "impactedFields": [
+          "monthly_payout_amount"
+        ],
+        "lineageDistance": 5,
+        "owner": "Finance Operations",
+        "recommendedAction": "Run downstream regression checks.",
+        "urn": "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+      }
+    ],
+    "unresolvedAssets": [
+      "urn:li:mlFeature:(synthetic,revenue_forecast_feature)"
+    ]
+  },
+  "incident": {
+    "constraints": [
+      "synthetic-data-only",
+      "no-external-api",
+      "approval-required",
+      "no-delete"
+    ],
+    "description": "Investigate the synthetic payout drop, trace downstream impact, and prepare a safe patch without changing production systems.",
+    "environment": "synthetic-replay",
+    "incidentId": "inc-2026-07-dsp-001",
+    "observedSymptoms": [
+      "Artist payout totals fell after the July provider file arrived.",
+      "The legacy staging model no longer finds artist_share or net_amount."
+    ],
+    "reportedAt": "2026-07-18T10:24:31Z",
+    "reporter": "Synthetic Demo Operator",
+    "repositoryPath": "data-stack/dbt",
+    "requestedActions": [
+      "analyze-impact",
+      "generate-patch",
+      "validate",
+      "prepare-write-back"
+    ],
+    "sourceAssetHint": "raw_dsp_settlements",
+    "status": "investigating",
+    "suspectedChange": "artist_share and net_amount were replaced by rights_split_pct and payable_revenue; share units may have changed.",
+    "synthetic": true,
+    "title": "July DSP payouts dropped sharply after a schema change"
+  },
+  "mode": "replay",
+  "patchPlan": {
+    "assumptions": [
+      "rights_split_pct values above 1 are percentages and values from 0 through 1 are fractions.",
+      "payable_revenue is semantically equivalent to the former net_amount after provider fees.",
+      "Canonical downstream names artist_share and net_amount remain stable during migration."
+    ],
+    "commands": [
+      "dbt parse",
+      "dbt compile",
+      "dbt test"
+    ],
+    "confidence": 0.91,
+    "files": [
+      {
+        "diff": "--- a/data-stack/dbt/models/staging/stg_dsp_streams.sql\n+++ b/data-stack/dbt/models/staging/stg_dsp_streams.sql\n@@ -1,19 +1,53 @@\n--- Legacy v1 model intentionally retained as the incident's pre-patch state.\n-select\n-    settlement_id,\n-    dsp_name,\n-    reporting_month,\n-    isrc,\n-    artist_id,\n-    territory_code,\n-    stream_count,\n-    gross_revenue,\n-    platform_fee,\n-    artist_share,\n-    net_amount,\n-    currency,\n-    payout_status,\n-    'provider-v1' as source_schema_version,\n-    false as invalid_rights_split\n-from {{ ref('raw_dsp_settlements_v1') }}\n+-- synthetic: true\n+-- source incident: inc-2026-07-dsp-001\n+-- context snapshot: recorded-datahub-context-replay\n+with provider_v1 as (\n+    select\n+        settlement_id,\n+        dsp_name,\n+        reporting_month,\n+        isrc,\n+        artist_id,\n+        territory_code,\n+        stream_count,\n+        gross_revenue,\n+        platform_fee,\n+        cast(artist_share as decimal(18, 6)) as artist_share,\n+        cast(net_amount as decimal(18, 2)) as net_amount,\n+        currency,\n+        payout_status,\n+        'provider-v1' as source_schema_version,\n+        artist_share is null or artist_share < 0 or artist_share > 1 as invalid_rights_split\n+    from {{ ref('raw_dsp_settlements_v1') }}\n+),\n \n+provider_v2 as (\n+    select\n+        settlement_id,\n+        dsp_name,\n+        reporting_month,\n+        isrc,\n+        artist_id,\n+        territory_code,\n+        stream_count,\n+        gross_revenue,\n+        platform_fee,\n+        cast(\n+            case\n+                when rights_split_pct between 0 and 1 then rights_split_pct\n+                when rights_split_pct > 1 and rights_split_pct <= 100 then rights_split_pct / 100.0\n+                else null\n+            end as decimal(18, 6)\n+        ) as artist_share,\n+        cast(payable_revenue as decimal(18, 2)) as net_amount,\n+        currency,\n+        payout_status,\n+        'provider-v2' as source_schema_version,\n+        rights_split_pct is null or rights_split_pct < 0 or rights_split_pct > 100 as invalid_rights_split\n+    from {{ ref('raw_dsp_settlements_v2') }}\n+)\n+\n+select * from provider_v1\n+union all\n+select * from provider_v2\n+\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "sql",
+        "operation": "modify",
+        "originalHash": "b07de4b7fdb86dbe9dd90a04caf7780eea9102b30316b0b62a2415bbd27ad5c1",
+        "path": "data-stack/dbt/models/staging/stg_dsp_streams.sql",
+        "proposedContent": "-- synthetic: true\n-- source incident: inc-2026-07-dsp-001\n-- context snapshot: recorded-datahub-context-replay\nwith provider_v1 as (\n    select\n        settlement_id,\n        dsp_name,\n        reporting_month,\n        isrc,\n        artist_id,\n        territory_code,\n        stream_count,\n        gross_revenue,\n        platform_fee,\n        cast(artist_share as decimal(18, 6)) as artist_share,\n        cast(net_amount as decimal(18, 2)) as net_amount,\n        currency,\n        payout_status,\n        'provider-v1' as source_schema_version,\n        artist_share is null or artist_share < 0 or artist_share > 1 as invalid_rights_split\n    from {{ ref('raw_dsp_settlements_v1') }}\n),\n\nprovider_v2 as (\n    select\n        settlement_id,\n        dsp_name,\n        reporting_month,\n        isrc,\n        artist_id,\n        territory_code,\n        stream_count,\n        gross_revenue,\n        platform_fee,\n        cast(\n            case\n                when rights_split_pct between 0 and 1 then rights_split_pct\n                when rights_split_pct > 1 and rights_split_pct <= 100 then rights_split_pct / 100.0\n                else null\n            end as decimal(18, 6)\n        ) as artist_share,\n        cast(payable_revenue as decimal(18, 2)) as net_amount,\n        currency,\n        payout_status,\n        'provider-v2' as source_schema_version,\n        rights_split_pct is null or rights_split_pct < 0 or rights_split_pct > 100 as invalid_rights_split\n    from {{ ref('raw_dsp_settlements_v2') }}\n)\n\nselect * from provider_v1\nunion all\nselect * from provider_v2\n\n",
+        "purpose": "Normalize old/new provider schemas into stable canonical fields.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/dbt/models/intermediate/int_royalty_calculation.sql\n+++ b/data-stack/dbt/models/intermediate/int_royalty_calculation.sql\n@@ -1,3 +1,5 @@\n+-- synthetic: true\n+-- source incident: inc-2026-07-dsp-001\n select\n     settlement_id,\n     reporting_month,\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "sql",
+        "operation": "modify",
+        "originalHash": "4be7178ec2966708ac5d69a088d8b6215014c33d7f7511c35cefcd9e9195e91e",
+        "path": "data-stack/dbt/models/intermediate/int_royalty_calculation.sql",
+        "proposedContent": "-- synthetic: true\n-- source incident: inc-2026-07-dsp-001\nselect\n    settlement_id,\n    reporting_month,\n    artist_id,\n    isrc,\n    territory_code,\n    currency,\n    gross_revenue,\n    platform_fee,\n    net_amount,\n    artist_share,\n    round(net_amount * artist_share, 2) as artist_payout_amount,\n    source_schema_version\nfrom {{ ref('stg_dsp_streams') }}\nwhere not invalid_rights_split\n\n",
+        "purpose": "Preserve royalty calculation semantics over canonical fields.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/dbt/models/schema.yml\n+++ b/data-stack/dbt/models/schema.yml\n@@ -2,20 +2,30 @@\n \n models:\n   - name: stg_dsp_streams\n-    description: Legacy pre-migration staging model retained to reproduce the incident.\n+    description: Backward-compatible synthetic DSP staging model for provider schema v1 and v2.\n     columns:\n       - name: settlement_id\n-        tests: [not_null, unique]\n+        description: Synthetic settlement identifier.\n+        tests: [not_null]\n       - name: artist_share\n+        description: Canonical artist share stored as a fraction from zero through one.\n         tests: [not_null]\n       - name: net_amount\n+        description: Canonical payable revenue after the platform fee.\n         tests: [not_null]\n+      - name: source_schema_version\n+        tests:\n+          - accepted_values:\n+              arguments:\n+                values: ['provider-v1', 'provider-v2']\n+      - name: invalid_rights_split\n+        description: Quarantine signal for null or out-of-range source share values.\n \n   - name: int_royalty_calculation\n     description: Calculates the synthetic artist payout from canonical fields.\n     columns:\n       - name: settlement_id\n-        tests: [not_null, unique]\n+        tests: [not_null]\n       - name: artist_payout_amount\n         tests: [not_null]\n \n@@ -24,4 +34,3 @@\n \n   - name: artist_monthly_payout\n     description: Synthetic monthly payout totals by artist and currency.\n-\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "yaml",
+        "operation": "modify",
+        "originalHash": "ff1992727ffc989044c2990956658565a171b6ad9a25771bfc714110372ccb71",
+        "path": "data-stack/dbt/models/schema.yml",
+        "proposedContent": "version: 2\n\nmodels:\n  - name: stg_dsp_streams\n    description: Backward-compatible synthetic DSP staging model for provider schema v1 and v2.\n    columns:\n      - name: settlement_id\n        description: Synthetic settlement identifier.\n        tests: [not_null]\n      - name: artist_share\n        description: Canonical artist share stored as a fraction from zero through one.\n        tests: [not_null]\n      - name: net_amount\n        description: Canonical payable revenue after the platform fee.\n        tests: [not_null]\n      - name: source_schema_version\n        tests:\n          - accepted_values:\n              arguments:\n                values: ['provider-v1', 'provider-v2']\n      - name: invalid_rights_split\n        description: Quarantine signal for null or out-of-range source share values.\n\n  - name: int_royalty_calculation\n    description: Calculates the synthetic artist payout from canonical fields.\n    columns:\n      - name: settlement_id\n        tests: [not_null]\n      - name: artist_payout_amount\n        tests: [not_null]\n\n  - name: royalty_ledger\n    description: Synthetic royalty ledger used by payment consumers.\n\n  - name: artist_monthly_payout\n    description: Synthetic monthly payout totals by artist and currency.\n",
+        "purpose": "Document fields and enforce schema/range tests.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/dbt/tests/assert_royalty_total_reconciles.sql\n+++ b/data-stack/dbt/tests/assert_royalty_total_reconciles.sql\n@@ -0,0 +1,11 @@\n+-- synthetic: true\n+-- returns a row only when payable revenue differs from gross revenue less platform fee\n+select\n+    reporting_month,\n+    round(sum(net_amount), 2) as payable_total,\n+    round(sum(gross_revenue - platform_fee), 2) as expected_total\n+from {{ ref('stg_dsp_streams') }}\n+where not invalid_rights_split\n+group by 1\n+having abs(sum(net_amount) - sum(gross_revenue - platform_fee)) > 0.01\n+\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "sql",
+        "operation": "create",
+        "originalHash": "NEW",
+        "path": "data-stack/dbt/tests/assert_royalty_total_reconciles.sql",
+        "proposedContent": "-- synthetic: true\n-- returns a row only when payable revenue differs from gross revenue less platform fee\nselect\n    reporting_month,\n    round(sum(net_amount), 2) as payable_total,\n    round(sum(gross_revenue - platform_fee), 2) as expected_total\nfrom {{ ref('stg_dsp_streams') }}\nwhere not invalid_rights_split\ngroup by 1\nhaving abs(sum(net_amount) - sum(gross_revenue - platform_fee)) > 0.01\n\n",
+        "purpose": "Reject unexplained payout-total drift.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/dbt/tests/assert_rights_split_range.sql\n+++ b/data-stack/dbt/tests/assert_rights_split_range.sql\n@@ -0,0 +1,6 @@\n+-- synthetic: true\n+select settlement_id, artist_share\n+from {{ ref('stg_dsp_streams') }}\n+where not invalid_rights_split\n+  and (artist_share < 0 or artist_share > 1 or artist_share is null)\n+\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "sql",
+        "operation": "create",
+        "originalHash": "NEW",
+        "path": "data-stack/dbt/tests/assert_rights_split_range.sql",
+        "proposedContent": "-- synthetic: true\nselect settlement_id, artist_share\nfrom {{ ref('stg_dsp_streams') }}\nwhere not invalid_rights_split\n  and (artist_share < 0 or artist_share > 1 or artist_share is null)\n\n",
+        "purpose": "Reject canonical artist-share values outside zero through one.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/dbt/tests/assert_settlement_period_unique.sql\n+++ b/data-stack/dbt/tests/assert_settlement_period_unique.sql\n@@ -0,0 +1,10 @@\n+-- synthetic: true\n+-- settlement identifiers may repeat across reporting periods, but never within one period\n+select\n+    settlement_id,\n+    reporting_month,\n+    count(*) as duplicate_count\n+from {{ ref('stg_dsp_streams') }}\n+where not invalid_rights_split\n+group by 1, 2\n+having count(*) > 1\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "sql",
+        "operation": "create",
+        "originalHash": "NEW",
+        "path": "data-stack/dbt/tests/assert_settlement_period_unique.sql",
+        "proposedContent": "-- synthetic: true\n-- settlement identifiers may repeat across reporting periods, but never within one period\nselect\n    settlement_id,\n    reporting_month,\n    count(*) as duplicate_count\nfrom {{ ref('stg_dsp_streams') }}\nwhere not invalid_rights_split\ngroup by 1, 2\nhaving count(*) > 1\n",
+        "purpose": "Enforce the settlement identifier and reporting-period business key.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/data-stack/contracts/dsp_settlement_contract.yml\n+++ b/data-stack/contracts/dsp_settlement_contract.yml\n@@ -1,13 +1,25 @@\n-contractVersion: 1\n+contractVersion: 2\n synthetic: true\n-providerSchema: provider-v1\n+providerSchema: provider-v1-or-v2\n canonicalFields:\n   artist_share:\n-    source: artist_share\n-    unit: fraction\n-    range: [0, 1]\n+    sources:\n+      - field: artist_share\n+        unit: fraction\n+        lifecycle: deprecated\n+      - field: rights_split_pct\n+        unit: fraction-or-percentage\n+        lifecycle: canonical-replacement\n+    normalizedUnit: fraction\n+    acceptedRange: [0, 1]\n+    invalidBehavior: quarantine\n   net_amount:\n-    source: net_amount\n+    sources:\n+      - field: net_amount\n+        lifecycle: deprecated\n+      - field: payable_revenue\n+        lifecycle: canonical-replacement\n     unit: currency\n-migrationStatus: pending\n+migrationId: inc-2026-07-dsp-001\n+migrationStatus: pending-human-approval\n \n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "yaml",
+        "operation": "modify",
+        "originalHash": "746e7df941b130a77122fda6f3054c5db31f7f319be86f68d812972b710d8ecc",
+        "path": "data-stack/contracts/dsp_settlement_contract.yml",
+        "proposedContent": "contractVersion: 2\nsynthetic: true\nproviderSchema: provider-v1-or-v2\ncanonicalFields:\n  artist_share:\n    sources:\n      - field: artist_share\n        unit: fraction\n        lifecycle: deprecated\n      - field: rights_split_pct\n        unit: fraction-or-percentage\n        lifecycle: canonical-replacement\n    normalizedUnit: fraction\n    acceptedRange: [0, 1]\n    invalidBehavior: quarantine\n  net_amount:\n    sources:\n      - field: net_amount\n        lifecycle: deprecated\n      - field: payable_revenue\n        lifecycle: canonical-replacement\n    unit: currency\nmigrationId: inc-2026-07-dsp-001\nmigrationStatus: pending-human-approval\n\n",
+        "purpose": "Version the provider migration contract and deprecations.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      },
+      {
+        "diff": "--- a/docs/migrations/2026-07-dsp-schema-change.md\n+++ b/docs/migrations/2026-07-dsp-schema-change.md\n@@ -0,0 +1,27 @@\n+# DSP Settlement Schema Migration \u2014 July 2026\n+\n+Synthetic example generated by `contextpatch-deterministic-mock-v1` for incident `inc-2026-07-dsp-001` from a recorded DataHub context snapshot.\n+\n+## Change\n+\n+- `artist_share` is replaced by `rights_split_pct`; observed values indicate mixed fraction and percentage units.\n+- `net_amount` is replaced by `payable_revenue` with compatible currency semantics in the supplied evidence.\n+\n+## Strategy\n+\n+Keep canonical downstream fields stable. Normalize `rights_split_pct` values from 0\u20131 as fractions and values above 1 through 100 as percentages. Quarantine null, negative, or above-100 values. Union the old and new synthetic source fixtures during the migration window.\n+\n+## Validation\n+\n+Run dbt parse, compile, build, schema/range tests, old/new/mixed fixture compatibility, and payable-total reconciliation. Currency tolerance is 0.01; no other unexplained amount drift is accepted.\n+\n+## Rollback\n+\n+Revert the approved patch, restore contract version 1, and quarantine provider-v2 input until the provider restores v1 or confirms corrected semantics. Do not delete new-source evidence.\n+\n+## Unresolved assumption\n+\n+The provider must confirm whether a value exactly equal to `1` always means 100% rather than 1%.\n+\n+Validation status: pending deterministic execution and human approval.\n+\n",
+        "evidenceReferences": [
+          "sch-fa8e59db9824",
+          "sch-15de33970808"
+        ],
+        "language": "markdown",
+        "operation": "create",
+        "originalHash": "NEW",
+        "path": "docs/migrations/2026-07-dsp-schema-change.md",
+        "proposedContent": "# DSP Settlement Schema Migration \u2014 July 2026\n\nSynthetic example generated by `contextpatch-deterministic-mock-v1` for incident `inc-2026-07-dsp-001` from a recorded DataHub context snapshot.\n\n## Change\n\n- `artist_share` is replaced by `rights_split_pct`; observed values indicate mixed fraction and percentage units.\n- `net_amount` is replaced by `payable_revenue` with compatible currency semantics in the supplied evidence.\n\n## Strategy\n\nKeep canonical downstream fields stable. Normalize `rights_split_pct` values from 0\u20131 as fractions and values above 1 through 100 as percentages. Quarantine null, negative, or above-100 values. Union the old and new synthetic source fixtures during the migration window.\n\n## Validation\n\nRun dbt parse, compile, build, schema/range tests, old/new/mixed fixture compatibility, and payable-total reconciliation. Currency tolerance is 0.01; no other unexplained amount drift is accepted.\n\n## Rollback\n\nRevert the approved patch, restore contract version 1, and quarantine provider-v2 input until the provider restores v1 or confirms corrected semantics. Do not delete new-source evidence.\n\n## Unresolved assumption\n\nThe provider must confirm whether a value exactly equal to `1` always means 100% rather than 1%.\n\nValidation status: pending deterministic execution and human approval.\n\n",
+        "purpose": "Provide migration, rollback, and unresolved-assumption guidance.",
+        "relatedAssets": [
+          "urn:li:dataJob:(synthetic,payout_csv_export)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.stg_dsp_streams,PROD)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.int_royalty_calculation,PROD)",
+          "urn:li:dataJob:(synthetic,artist_statement_generator)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.royalty_ledger,PROD)",
+          "urn:li:mlFeature:(synthetic,revenue_forecast_feature)",
+          "urn:li:dataset:(urn:li:dataPlatform:dbt,royalty.artist_monthly_payout,PROD)",
+          "urn:li:dashboard:(looker,finance_reconciliation_dashboard)"
+        ],
+        "validationCommands": [
+          "dbt parse",
+          "dbt compile",
+          "dbt test"
+        ]
+      }
+    ],
+    "incidentId": "inc-2026-07-dsp-001",
+    "patchId": "patch-inc-2026-07-dsp-001",
+    "requiresApproval": true,
+    "riskLevel": "medium",
+    "rollbackPlan": [
+      "Revert the approved local patch file.",
+      "Restore the previous contract version.",
+      "Keep the provider feed quarantined until the old schema or a corrected mapping is available."
+    ],
+    "strategy": "Backward-compatible migration with explicit mixed-unit normalization and invalid-row quarantine.",
+    "summary": "Add a backward-compatible DSP settlement schema adapter and payout reconciliation checks.",
+    "unresolvedQuestions": [
+      "Confirm the provider's intended unit for values exactly equal to 1."
+    ],
+    "validationPlan": [
+      "Validate PatchPlan and path policy.",
+      "Compile SQL and run old, new, and mixed fixtures.",
+      "Reconcile payable and artist payout totals with 0.01 currency tolerance.",
+      "Scan generated text for secrets and prohibited patterns."
+    ],
+    "writeBackPlan": {
+      "operations": [
+        "save_document",
+        "update_description",
+        "add_tags"
+      ],
+      "requiresApproval": true,
+      "status": "preview-only"
+    }
+  },
+  "schemaChanges": [
+    {
+      "assumptions": [
+        "Provider documentation is incomplete.",
+        "Canonical downstream field names remain stable."
+      ],
+      "changeId": "sch-fa8e59db9824",
+      "changeType": "unitChange",
+      "confidence": 0.819,
+      "evidence": [
+        "Shared semantic terms: Artist Share, Royalty Split.",
+        "Both fields occupy the provider-to-staging schema position for artist_share.",
+        "Native types are numeric \u2192 numeric.",
+        "Observed ranges differ: 0\u20131 vs 0\u2013100; mixed fraction/percentage normalization is required."
+      ],
+      "nameSimilarity": 0.357,
+      "newField": "rights_split_pct",
+      "oldField": "artist_share",
+      "requiresHumanConfirmation": true,
+      "semanticSimilarity": 0.75,
+      "typeCompatibility": "compatible",
+      "unitCompatibility": "requires-normalization"
+    },
+    {
+      "assumptions": [
+        "Provider documentation is incomplete.",
+        "Canonical downstream field names remain stable."
+      ],
+      "changeId": "sch-15de33970808",
+      "changeType": "rename",
+      "confidence": 0.883,
+      "evidence": [
+        "Shared semantic terms: Net Amount, Payable Revenue.",
+        "Both fields occupy the provider-to-staging schema position for net_amount.",
+        "Native types are numeric \u2192 numeric.",
+        "Observed values and descriptions support a rename without a proven unit change."
+      ],
+      "nameSimilarity": 0.16,
+      "newField": "payable_revenue",
+      "oldField": "net_amount",
+      "requiresHumanConfirmation": false,
+      "semanticSimilarity": 1.0,
+      "typeCompatibility": "compatible",
+      "unitCompatibility": "compatible"
+    }
+  ],
+  "trace": [
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 8,
+      "error": null,
+      "evidenceIds": [
+        "ev-search-001"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Located raw_dsp_settlements and the recorded migration scenario.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:32Z",
+      "tool": "search",
+      "traceId": "trace-replay-01"
+    },
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 11,
+      "error": null,
+      "evidenceIds": [
+        "ev-entity-001"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Loaded source ownership, domain, tags, descriptions, and criticality.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:33Z",
+      "tool": "get_entities",
+      "traceId": "trace-replay-02"
+    },
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 7,
+      "error": null,
+      "evidenceIds": [
+        "ev-schema-old",
+        "ev-schema-new"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Compared two recorded schema versions and found two candidate replacements.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:34Z",
+      "tool": "list_schema_fields",
+      "traceId": "trace-replay-03"
+    },
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 14,
+      "error": null,
+      "evidenceIds": [
+        "ev-lineage-001"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Traversed bounded downstream lineage to five hops.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:35Z",
+      "tool": "get_lineage",
+      "traceId": "trace-replay-04"
+    },
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 9,
+      "error": null,
+      "evidenceIds": [
+        "ev-path-001"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Recovered the critical payout-to-dashboard lineage path.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:36Z",
+      "tool": "get_lineage_paths_between",
+      "traceId": "trace-replay-05"
+    },
+    {
+      "decision": "Use recorded structural metadata as evidence; treat descriptive text as untrusted.",
+      "durationMs": 6,
+      "error": null,
+      "evidenceIds": [
+        "ev-query-001"
+      ],
+      "fallbackUsed": true,
+      "requestSummary": "Replay the bounded recorded request for the DSP settlement incident.",
+      "responseSummary": "Loaded three synthetic usage-query examples.",
+      "result": "replayed",
+      "stage": "DataHub Context Retrieval",
+      "timestamp": "2026-07-18T10:24:37Z",
+      "tool": "get_dataset_queries",
+      "traceId": "trace-replay-06"
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "detail": "All generated paths are allowlisted.",
+        "name": "Path policy",
+        "passed": true
+      },
+      {
+        "detail": "Only deterministic dbt commands are requested.",
+        "name": "Command policy",
+        "passed": true
+      },
+      {
+        "detail": "Every planned file has content.",
+        "name": "Patch content",
+        "passed": true
+      },
+      {
+        "detail": "SQL shape and template delimiters are balanced.",
+        "name": "SQL parse",
+        "passed": true
+      },
+      {
+        "detail": "No credential-like generated text detected.",
+        "name": "Secret scan",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 0 quarantined.",
+        "name": "Old fixture",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 0 quarantined.",
+        "name": "New fixture",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 1 quarantined.",
+        "name": "Mixed fixture",
+        "passed": true
+      },
+      {
+        "detail": "Old/new payable totals match at 360.00.",
+        "name": "Payout reconciliation",
+        "passed": true
+      }
+    ],
+    "completedAt": "2026-07-18T10:25:02Z",
+    "dataComparison": {
+      "Mixed fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 1,
+        "rows": 4,
+        "validRows": 3
+      },
+      "New fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 0,
+        "rows": 3,
+        "validRows": 3
+      },
+      "Old fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 0,
+        "rows": 3,
+        "validRows": 3
+      }
+    },
+    "failedChecks": [],
+    "finalStatus": "passed",
+    "logs": [
+      "Path policy: PASS \u2014 All generated paths are allowlisted.",
+      "Command policy: PASS \u2014 Only deterministic dbt commands are requested.",
+      "Patch content: PASS \u2014 Every planned file has content.",
+      "SQL parse: PASS \u2014 SQL shape and template delimiters are balanced.",
+      "Secret scan: PASS \u2014 No credential-like generated text detected.",
+      "Old fixture: PASS \u2014 3 valid rows; 0 quarantined.",
+      "New fixture: PASS \u2014 3 valid rows; 0 quarantined.",
+      "Mixed fixture: PASS \u2014 3 valid rows; 1 quarantined.",
+      "Payout reconciliation: PASS \u2014 Old/new payable totals match at 360.00."
+    ],
+    "passed": true,
+    "patchId": "patch-inc-2026-07-dsp-001",
+    "repairAttempted": false,
+    "startedAt": "2026-07-18T10:25:02Z",
+    "validationId": "validation-patch-inc-2026-07-dsp-001",
+    "warnings": [
+      "Recorded replay validation; dbt CLI checks are reported separately."
+    ]
+  },
+  "warnings": [
+    "Recorded DataHub Context Replay \u2014 no live DataHub or MCP request was made.",
+    "Potential metadata prompt injection detected (3 pattern hits)."
+  ],
+  "writeBackPreview": {
+    "affectedUrns": [
+      "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)"
+    ],
+    "approved": false,
+    "executionResults": [],
+    "mode": "recorded-replay-preview",
+    "note": "Replay preview only. No DataHub mutation is performed.",
+    "operations": [
+      {
+        "target": "Schema Migration Incident \u2014 DSP Settlement July 2026",
+        "tool": "save_document"
+      },
+      {
+        "mode": "append",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "update_description"
+      },
+      {
+        "tags": [
+          "Migration Resolved",
+          "Synthetic Demo"
+        ],
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "add_tags"
+      }
+    ],
+    "patchId": "patch-inc-2026-07-dsp-001",
+    "requiresApproval": true,
+    "validationStatus": "passed"
+  }
+}

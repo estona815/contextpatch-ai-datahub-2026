@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_dsp_streams
+    description: Backward-compatible synthetic DSP staging model for provider schema v1 and v2.
+    columns:
+      - name: settlement_id
+        description: Synthetic settlement identifier.
+        tests: [not_null]
+      - name: artist_share
+        description: Canonical artist share stored as a fraction from zero through one.
+        tests: [not_null]
+      - name: net_amount
+        description: Canonical payable revenue after the platform fee.
+        tests: [not_null]
+      - name: source_schema_version
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['provider-v1', 'provider-v2']
+      - name: invalid_rights_split
+        description: Quarantine signal for null or out-of-range source share values.
+
+  - name: int_royalty_calculation
+    description: Calculates the synthetic artist payout from canonical fields.
+    columns:
+      - name: settlement_id
+        tests: [not_null]
+      - name: artist_payout_amount
+        tests: [not_null]
+
+  - name: royalty_ledger
+    description: Synthetic royalty ledger used by payment consumers.
+
+  - name: artist_monthly_payout
+    description: Synthetic monthly payout totals by artist and currency.

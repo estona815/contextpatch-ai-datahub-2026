@@ -1,0 +1,102 @@
+{
+  "contextSnapshot": "recorded-datahub-context-replay",
+  "generatedAt": "2026-07-18T10:25:02Z",
+  "generatedBy": "contextpatch-deterministic-mock-v1",
+  "sourceIncident": "inc-2026-07-dsp-001",
+  "synthetic": true,
+  "validation": {
+    "checks": [
+      {
+        "detail": "All generated paths are allowlisted.",
+        "name": "Path policy",
+        "passed": true
+      },
+      {
+        "detail": "Only deterministic dbt commands are requested.",
+        "name": "Command policy",
+        "passed": true
+      },
+      {
+        "detail": "Every planned file has content.",
+        "name": "Patch content",
+        "passed": true
+      },
+      {
+        "detail": "SQL shape and template delimiters are balanced.",
+        "name": "SQL parse",
+        "passed": true
+      },
+      {
+        "detail": "No credential-like generated text detected.",
+        "name": "Secret scan",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 0 quarantined.",
+        "name": "Old fixture",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 0 quarantined.",
+        "name": "New fixture",
+        "passed": true
+      },
+      {
+        "detail": "3 valid rows; 1 quarantined.",
+        "name": "Mixed fixture",
+        "passed": true
+      },
+      {
+        "detail": "Old/new payable totals match at 360.00.",
+        "name": "Payout reconciliation",
+        "passed": true
+      }
+    ],
+    "completedAt": "2026-07-18T10:25:02Z",
+    "dataComparison": {
+      "Mixed fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 1,
+        "rows": 4,
+        "validRows": 3
+      },
+      "New fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 0,
+        "rows": 3,
+        "validRows": 3
+      },
+      "Old fixture": {
+        "artistPayoutTotal": "236.00",
+        "payableTotal": "360.00",
+        "quarantinedRows": 0,
+        "rows": 3,
+        "validRows": 3
+      }
+    },
+    "failedChecks": [],
+    "finalStatus": "passed",
+    "logs": [
+      "Path policy: PASS \u2014 All generated paths are allowlisted.",
+      "Command policy: PASS \u2014 Only deterministic dbt commands are requested.",
+      "Patch content: PASS \u2014 Every planned file has content.",
+      "SQL parse: PASS \u2014 SQL shape and template delimiters are balanced.",
+      "Secret scan: PASS \u2014 No credential-like generated text detected.",
+      "Old fixture: PASS \u2014 3 valid rows; 0 quarantined.",
+      "New fixture: PASS \u2014 3 valid rows; 0 quarantined.",
+      "Mixed fixture: PASS \u2014 3 valid rows; 1 quarantined.",
+      "Payout reconciliation: PASS \u2014 Old/new payable totals match at 360.00."
+    ],
+    "passed": true,
+    "patchId": "patch-inc-2026-07-dsp-001",
+    "repairAttempted": false,
+    "startedAt": "2026-07-18T10:25:02Z",
+    "validationId": "validation-patch-inc-2026-07-dsp-001",
+    "warnings": [
+      "Recorded replay validation; dbt CLI checks are reported separately."
+    ]
+  },
+  "validationStatus": "passed"
+}

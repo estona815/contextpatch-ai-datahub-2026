@@ -1,0 +1,6 @@
+{
+  "patchId": "unsafe-example",
+  "files": [{"path": "../../.ssh/config", "operation": "delete"}],
+  "requiresApproval": false
+}
+

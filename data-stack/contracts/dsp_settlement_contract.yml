@@ -1,0 +1,13 @@
+contractVersion: 1
+synthetic: true
+providerSchema: provider-v1
+canonicalFields:
+  artist_share:
+    source: artist_share
+    unit: fraction
+    range: [0, 1]
+  net_amount:
+    source: net_amount
+    unit: currency
+migrationStatus: pending
+

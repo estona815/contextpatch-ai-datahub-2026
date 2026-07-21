@@ -1,0 +1,1 @@
+ContextPatch AI turns recorded DataHub schema, lineage, ownership, and query context into an evidence-linked dbt migration plan with real DuckDB validation and human approval—running without a key, account, API, Docker, or network.

@@ -1,0 +1,25 @@
+contractVersion: 2
+synthetic: true
+providerSchema: provider-v1-or-v2
+canonicalFields:
+  artist_share:
+    sources:
+      - field: artist_share
+        unit: fraction
+        lifecycle: deprecated
+      - field: rights_split_pct
+        unit: fraction-or-percentage
+        lifecycle: canonical-replacement
+    normalizedUnit: fraction
+    acceptedRange: [0, 1]
+    invalidBehavior: quarantine
+  net_amount:
+    sources:
+      - field: net_amount
+        lifecycle: deprecated
+      - field: payable_revenue
+        lifecycle: canonical-replacement
+    unit: currency
+migrationId: inc-2026-07-dsp-001
+migrationStatus: pending-human-approval
+

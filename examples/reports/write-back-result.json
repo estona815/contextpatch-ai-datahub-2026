@@ -1,0 +1,56 @@
+{
+  "boundary": "Local replay store only; no DataHub mutation was attempted.",
+  "contextSnapshot": "recorded-datahub-context-replay",
+  "generatedAt": "2026-07-18T10:25:02Z",
+  "generatedBy": "contextpatch-deterministic-mock-v1",
+  "result": {
+    "affectedUrns": [
+      "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)"
+    ],
+    "approved": true,
+    "executionResults": [
+      {
+        "status": "locally-recorded",
+        "target": "Schema Migration Incident \u2014 DSP Settlement July 2026",
+        "tool": "save_document"
+      },
+      {
+        "status": "locally-recorded",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "update_description"
+      },
+      {
+        "status": "locally-recorded",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "add_tags"
+      }
+    ],
+    "mode": "local-replay-store",
+    "note": "Replay preview only. No DataHub mutation is performed.",
+    "operations": [
+      {
+        "target": "Schema Migration Incident \u2014 DSP Settlement July 2026",
+        "tool": "save_document"
+      },
+      {
+        "mode": "append",
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "update_description"
+      },
+      {
+        "tags": [
+          "Migration Resolved",
+          "Synthetic Demo"
+        ],
+        "target": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)",
+        "tool": "add_tags"
+      }
+    ],
+    "patchId": "patch-inc-2026-07-dsp-001",
+    "requiresApproval": true,
+    "validationStatus": "passed"
+  },
+  "sourceIncident": "inc-2026-07-dsp-001",
+  "synthetic": true,
+  "validationStatus": "passed"
+}

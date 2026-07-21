@@ -1,0 +1,8 @@
+contextpatch_royalty:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: ../local/contextpatch.duckdb
+      threads: 2
+

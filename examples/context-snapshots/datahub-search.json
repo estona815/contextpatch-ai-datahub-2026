@@ -1,0 +1,10 @@
+{
+  "mode": "recorded-datahub-context-replay",
+  "synthetic": true,
+  "tool": "search",
+  "query": "raw_dsp_settlements",
+  "results": [
+    {"urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,royalty.raw_dsp_settlements,PROD)", "name": "raw_dsp_settlements", "type": "dataset", "matched": "name"}
+  ]
+}
+

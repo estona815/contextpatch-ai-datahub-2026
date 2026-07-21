@@ -1,0 +1,6 @@
+settlement_id,dsp_name,reporting_month,isrc,artist_id,territory_code,stream_count,gross_revenue,platform_fee,artist_share,net_amount,rights_split_pct,payable_revenue,currency,payout_status,synthetic
+SYN-M01,DemoStream,2026-07,SYNISRC001,ART-SYN-01,US,1000,100.00,20.00,0.65,80.00,,,USD,pending,true
+SYN-M02,DemoStream,2026-07,SYNISRC002,ART-SYN-02,GB,1800,200.00,40.00,,,70,160.00,USD,pending,true
+SYN-M03,DemoStream,2026-07,SYNISRC003,ART-SYN-03,KR,1500,150.00,30.00,0.60,120.00,60,120.00,USD,pending,true
+SYN-M04,DemoStream,2026-07,SYNISRC004,ART-SYN-04,USA,700,50.00,10.00,,,165,40.00,,quarantine,true
+

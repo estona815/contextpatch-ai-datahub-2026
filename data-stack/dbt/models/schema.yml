@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_dsp_streams
+    description: Legacy pre-migration staging model retained to reproduce the incident.
+    columns:
+      - name: settlement_id
+        tests: [not_null, unique]
+      - name: artist_share
+        tests: [not_null]
+      - name: net_amount
+        tests: [not_null]
+
+  - name: int_royalty_calculation
+    description: Calculates the synthetic artist payout from canonical fields.
+    columns:
+      - name: settlement_id
+        tests: [not_null, unique]
+      - name: artist_payout_amount
+        tests: [not_null]
+
+  - name: royalty_ledger
+    description: Synthetic royalty ledger used by payment consumers.
+
+  - name: artist_monthly_payout
+    description: Synthetic monthly payout totals by artist and currency.
+
