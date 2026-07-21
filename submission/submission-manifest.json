@@ -1,11 +1,12 @@
 {
   "projectName": "ContextPatch AI",
   "version": "0.1.0",
-  "gitCommit": "UNCOMMITTED_USER_ACTION_REQUIRED",
+  "gitCommit": "81f81001186b97e8abebaaf159b052f91cbee499",
+  "gitCommitScope": "Validated implementation commit; publication metadata and video follow it.",
   "buildDate": "2026-07-21",
-  "repositoryUrl": "USER_ACTION_REQUIRED",
-  "demoUrl": "USER_ACTION_REQUIRED",
-  "videoUrl": "USER_ACTION_REQUIRED",
+  "repositoryUrl": "https://github.com/estona815/contextpatch-ai-datahub-2026",
+  "demoUrl": "https://estona815.github.io/contextpatch-ai-datahub-2026/",
+  "videoUrl": "https://youtu.be/tT01wUpNsYM",
   "license": "Apache-2.0",
   "challengeCategory": "Build with DataHub: The Agent Hackathon 2026",
   "dataHubVersion": "1.6.0 target; not run in Replay build",
@@ -18,7 +19,9 @@
     "examples/reports/context-ablation.json",
     "examples/reports/dependency-license-inventory.json",
     "examples/patches/proposed.patch",
-    "artifacts/screenshots/01-overview.png"
+    "artifacts/screenshots/01-overview.png",
+    "submission/contextpatch-ai-demo.mp4",
+    "submission/demo-video-captions.srt"
   ],
   "testResults": {
     "python": "17 tests passed on 2026-07-21",
@@ -31,10 +34,10 @@
   "knownLimitations": [
     "No live DataHub ingestion, MCP connection, or mutation was validated.",
     "No external AI model is called; MockProvider is deterministic and template-bound.",
-    "Public repository, demo, and video URLs are not set."
+    "The hosted app is a static recorded replay, not a live DataHub connection."
   ],
   "checksums": {
-    "README.md": "769f8c0bd3e6ccbe229a1d43203535e426ab7071496c30e15f398eed0aac14c4",
+    "README.md": "3687bdc4eb6f897b2238fd19511536cc05a7de8909f7149353a1bbf290adf5e8",
     "LICENSE": "206dce8d67c68cb0c7552f5ecaeeb3bcc7b143dbae7bdbba185bec806fd3701b",
     "AI_DISCLOSURE.md": "90e553f23eed8406cf62d2f29bf4505dbaa730a32e287c43fe3ef9f75e20898d",
     "DATAHUB_USAGE.md": "9f0db62710a16a8b2a42aa71aec02563fcd1536245a00d04ee3028b2beca3d65",
@@ -42,8 +45,10 @@
     "examples/reports/dbt-sandbox-validation.json": "d9efb422fce100834afff511b2b7c552523627d0170371d16c673d66238ba3a4",
     "examples/reports/evaluation-results.json": "bb55b357bc3ab5596f234d24e47c21edfca00b8659836bf0ad6f03c6008fb3f3",
     "examples/reports/context-ablation.json": "6d313b24382bb5c1bb3b5d27ef94fc9700110d9c2650bda541ed9a24236afafe",
-    "examples/reports/dependency-license-inventory.json": "a0aecd889c7a6704925aaaff1be8966fe4d2cb09286ad7816e323fcfaa63f834",
+    "examples/reports/dependency-license-inventory.json": "be46c6c9834b5c8d1b262cb5bd27969e267e00a9857367c7c261bba63c1964a3",
     "examples/patches/proposed.patch": "46af1d02ec3ecdcc70e5c9b3299e5040a352cd95a87686ba1ff1b8fb23e01e98",
-    "artifacts/screenshots/01-overview.png": "44dcbf117c3b7941787b041ac7485eca7ec594d49d9a90cfa26ecce0bdf87150"
+    "artifacts/screenshots/01-overview.png": "44dcbf117c3b7941787b041ac7485eca7ec594d49d9a90cfa26ecce0bdf87150",
+    "submission/contextpatch-ai-demo.mp4": "4e663be2ebd2d82ff39a293cb5381f8096eae6b09f2bd9aa7a1f8f646b7478df",
+    "submission/demo-video-captions.srt": "b82b2f42250d7b8c3c118a9c9d520bd9e8113007ff266308c41a736d28569696"
   }
 }

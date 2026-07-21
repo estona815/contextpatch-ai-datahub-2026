@@ -4,7 +4,7 @@
 | --- | --- | --- | --- |
 | Judges require live DataHub proof | High | High | Largest gap; record Full Mode only after real ingestion/MCP/write-back validation |
 | Static replay mistaken for live | Medium | High | Persistent labels, disclosure files, manifest limitations |
-| No hosted URL or video | High until completed | High | Keep placeholders explicit; user must publish and attach links |
+| Hosted demo or video becomes unavailable | Low | High | Public GitHub Pages and YouTube links are recorded in the manifest and rechecked before submission |
 | Deterministic provider seen as insufficient AI | Medium | High | Explain safe keyless architecture; add optional structured live provider only with key and evaluation |
 | Patch template overfits one incident | High | Medium | 25-case router suite exists, but multi-incident code generation is not evaluated |
 | Transitive dependency drift | Medium | Medium | JS lockfile and direct Python pins; add committed Python lock/hashes |

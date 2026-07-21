@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a deterministic submission manifest while preserving explicit URL placeholders."""
+"""Build the deterministic public-submission manifest."""
 
 from __future__ import annotations
 
@@ -21,6 +21,8 @@ FILES = [
     "examples/reports/dependency-license-inventory.json",
     "examples/patches/proposed.patch",
     "artifacts/screenshots/01-overview.png",
+    "submission/contextpatch-ai-demo.mp4",
+    "submission/demo-video-captions.srt",
 ]
 
 
@@ -31,11 +33,12 @@ def digest(relative: str) -> str:
 manifest = {
     "projectName": "ContextPatch AI",
     "version": "0.1.0",
-    "gitCommit": "UNCOMMITTED_USER_ACTION_REQUIRED",
+    "gitCommit": "81f81001186b97e8abebaaf159b052f91cbee499",
+    "gitCommitScope": "Validated implementation commit; publication metadata and video follow it.",
     "buildDate": "2026-07-21",
-    "repositoryUrl": "USER_ACTION_REQUIRED",
-    "demoUrl": "USER_ACTION_REQUIRED",
-    "videoUrl": "USER_ACTION_REQUIRED",
+    "repositoryUrl": "https://github.com/estona815/contextpatch-ai-datahub-2026",
+    "demoUrl": "https://estona815.github.io/contextpatch-ai-datahub-2026/",
+    "videoUrl": "https://youtu.be/tT01wUpNsYM",
     "license": "Apache-2.0",
     "challengeCategory": "Build with DataHub: The Agent Hackathon 2026",
     "dataHubVersion": "1.6.0 target; not run in Replay build",
@@ -53,7 +56,7 @@ manifest = {
     "knownLimitations": [
         "No live DataHub ingestion, MCP connection, or mutation was validated.",
         "No external AI model is called; MockProvider is deterministic and template-bound.",
-        "Public repository, demo, and video URLs are not set.",
+        "The hosted app is a static recorded replay, not a live DataHub connection.",
     ],
     "checksums": {relative: digest(relative) for relative in FILES},
 }

@@ -12,7 +12,7 @@ Schema incidents are dangerous when a rename hides a semantic or unit change. A 
 
 ContextPatch AI turns a structured incident and DataHub context into an evidence-linked repair workflow. It maps changed fields, calculates a bounded downstream blast radius, proposes a constrained multi-file dbt patch, validates old/new/mixed fixtures and payout reconciliation, and requires human approval before preparing metadata write-back.
 
-The default public-demo candidate is a completely keyless Recorded DataHub Context Replay. It runs without an account, API key, external AI API, Docker, or network and is clearly labeled as replay throughout the interface.
+The public demo is a completely keyless Recorded DataHub Context Replay. It runs without an account, API key, external AI API, Docker, or network and is clearly labeled as replay throughout the interface.
 
 ## How we built it
 
@@ -51,7 +51,7 @@ Schema metadata explains *what changed*; lineage, ownership, and usage explain *
 
 ## What is next
 
-Validate the optional Full Mode end to end with real DataHub ingestion, MCP capability discovery, approved mutation, and read-after-write verification; evaluate a structured live model against the same fixtures; add server-side approval integrity; publish the replay; and propose the prepared DataHub Skill upstream after explicit review.
+Validate the optional Full Mode end to end with real DataHub ingestion, MCP capability discovery, approved mutation, and read-after-write verification; evaluate a structured live model against the same fixtures; add server-side approval integrity; and propose the prepared DataHub Skill upstream after explicit review.
 
 ## Built with
 
@@ -59,9 +59,9 @@ React, Vite, TypeScript, Python, dbt Core 1.12.0, dbt-duckdb 1.10.1, DuckDB 1.5.
 
 ## Links
 
-- Repository: `USER_ACTION_REQUIRED`
-- Replay demo: `USER_ACTION_REQUIRED`
-- Video: `USER_ACTION_REQUIRED`
+- Repository: https://github.com/estona815/contextpatch-ai-datahub-2026
+- Replay demo: https://estona815.github.io/contextpatch-ai-datahub-2026/
+- Video: https://youtu.be/tT01wUpNsYM
 
 ## Testing
 

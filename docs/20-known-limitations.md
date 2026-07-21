@@ -8,5 +8,5 @@
 - Impact ground truth and context snapshots are synthetic and hand-reviewed; the evaluation is not a benchmark of production catalogs.
 - Python direct dependencies are pinned and the validated environment has a transitive license metadata inventory, but a committed Python lockfile is absent.
 - The primary desktop flow and 390 px responsive layout were exercised in a real browser and captured under `artifacts/screenshots`; automated Playwright video and cross-browser coverage are still absent.
-- Public hosting, a public repository, a public video, final URLs, and Devpost submission are not completed.
+- The public GitHub Pages app is a static replay. Public repository, demo, and video links are complete; Devpost submission is tracked separately.
 - ContextPatch AI name search was informal and is not legal or trademark clearance.

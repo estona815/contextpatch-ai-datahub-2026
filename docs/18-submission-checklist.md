@@ -13,15 +13,16 @@
 - [x] Desktop guided-flow and mobile screenshots generated and linked locally
 - [x] Local secret scan, `pnpm audit`, `pip check`, and dependency license inventory
 
-## Must be completed or re-verified before Devpost
+## Publication and Devpost status
 
-- [ ] Run and capture live DataHub OSS ingestion, lineage, MCP reads, approved mutation, and read-after-write—or submit with the limitation made unmistakable if rules allow
-- [ ] Add public repository URL and show Apache-2.0 in the repository About section
-- [ ] Publish an account-free replay URL
-- [ ] Record a public under-three-minute video and add captions
-- [ ] Add public URLs to README/manifest and confirm screenshots are included in the publication commit
-- [ ] Re-run secret, dependency, and license audits on the publication commit
-- [ ] Verify Devpost rules/deadline again and complete every platform field
-- [ ] Replace `UNSET` manifest values and compute final-commit checksums
+- [x] Submit as a clearly labeled recorded replay; no live ingestion, MCP session, or mutation is claimed
+- [x] Add public repository URL and show Apache-2.0 in the repository About section
+- [x] Publish an account-free replay URL
+- [x] Publish a public 1:40 video with burned-in English captions
+- [x] Add public URLs to README/manifest and confirm screenshots are included in the publication commit
+- [x] Re-run secret, dependency vulnerability, environment integrity, and license inventory audits for publication
+- [x] Re-verify the Devpost rules and deadline before submission
+- [x] Replace manifest placeholders and compute publication checksums
+- [ ] Complete every Devpost platform field and submit
 
-No deployment, public repository publication, video upload, Devpost submission, or upstream PR is authorized or claimed.
+The public repository, account-free replay, and video are live. Devpost submission is not claimed until its platform flow completes; no upstream PR is claimed.

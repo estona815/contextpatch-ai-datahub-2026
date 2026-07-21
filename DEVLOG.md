@@ -19,3 +19,10 @@
 - Exercised the desktop browser flow through validation, approval, and local write-back; captured eight desktop screens and one 390×844 responsive screen. Fixed mobile overflow and the 1280 px three-column minimum-width edge.
 - Ran 17 Python tests, 3 frontend tests, typecheck, ESLint, production build, `pip check`, `pnpm audit`, a high-confidence secret scan, and JavaScript/Python dependency license inventory.
 - The first final dbt command used a relative executable path one directory short; the sandbox was unaffected and the corrected absolute-root command passed.
+
+## 2026-07-21 — Public submission assets
+
+- Published the isolated project repository at `https://github.com/estona815/contextpatch-ai-datahub-2026` with Apache-2.0 detected.
+- Published the account-free static replay at `https://estona815.github.io/contextpatch-ai-datahub-2026/`.
+- Produced and visually checked a 1:40, 1920×1080 demo with burned-in English captions, then published it publicly at `https://youtu.be/tT01wUpNsYM`.
+- Kept the live DataHub/MCP/mutation limitation explicit across the README, manifest, video, and Devpost copy.

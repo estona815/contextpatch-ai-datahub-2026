@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:09,000
+ContextPatch AI — Data context in. Production-ready patch out.
+
+2
+00:00:09,000 --> 00:00:20,000
+An upstream royalty schema rename also changed a fraction into a percentage.
+
+3
+00:00:20,000 --> 00:00:32,000
+Six recorded DataHub-shaped reads reproduce schema, lineage, entity, path, and query evidence.
+
+4
+00:00:32,000 --> 00:00:44,000
+Recorded lineage reveals eight downstream assets and three responsible teams.
+
+5
+00:00:44,000 --> 00:00:58,000
+The agent proposes eight bounded files with unit normalization, contracts, tests, and rollback guidance.
+
+6
+00:00:58,000 --> 00:01:12,000
+An isolated dbt and DuckDB sandbox passes 3 seeds, 4 models, and 9 tests: 16 of 16.
+
+7
+00:01:12,000 --> 00:01:22,000
+A human can approve, reject, request revision, or export the evidence package.
+
+8
+00:01:22,000 --> 00:01:32,000
+Approval records a local replay receipt. No live DataHub mutation is claimed.
+
+9
+00:01:32,000 --> 00:01:40,000
+No key. No external API. No Docker. Full recorded context recovered the complete repair.

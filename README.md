@@ -18,8 +18,10 @@ The guided demo maps `artist_share → rights_split_pct` (including 0.65/65 unit
 
 The final interface was checked at 1536×1024 and 390×844. The generated concept and implementation fidelity notes remain under [`design/`](design).
 
-Live demo: **USER ACTION REQUIRED — not deployed**  
-Demo video: **USER ACTION REQUIRED — not recorded/uploaded**  
+- Live demo: **[Open the account-free replay](https://estona815.github.io/contextpatch-ai-datahub-2026/)**
+- Demo video: **[Watch the 1:40 public captioned walkthrough](https://youtu.be/tT01wUpNsYM)**
+- Source: **[github.com/estona815/contextpatch-ai-datahub-2026](https://github.com/estona815/contextpatch-ai-datahub-2026)**
+
 Challenge: **Build with DataHub: The Agent Hackathon 2026**
 
 ## Why this exists
@@ -156,7 +158,7 @@ Metadata text is untrusted. Paths and commands are allowlisted, generated conten
 
 ## Honest limitations
 
-No live DataHub server, ingestion, MCP handshake, DataHub mutation, external model, public deployment, public video, or upstream PR ran in the validated build. The static UI approval is demonstrative, not a production authorization service. Full details are in [docs/20-known-limitations.md](docs/20-known-limitations.md).
+No live DataHub server, ingestion, MCP handshake, DataHub mutation, external model, or upstream PR ran in the validated build. The hosted demo is the disclosed static replay, and its UI approval is demonstrative rather than a production authorization service. Full details are in [docs/20-known-limitations.md](docs/20-known-limitations.md).
 
 ## Disclosures and license
 
@@ -165,4 +167,4 @@ No live DataHub server, ingestion, MCP handshake, DataHub mutation, external mod
 - Third-party notices: [ATTRIBUTIONS.md](ATTRIBUTIONS.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 - License: [Apache License 2.0](LICENSE)
 
-This repository has not been deployed, published, submitted to Devpost, or contributed upstream by this build process.
+This repository, static replay, and captioned demo video were published on 2026-07-21. Devpost submission and any upstream contribution remain separately tracked actions.

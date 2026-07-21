@@ -1199,7 +1199,7 @@
     ]
   },
   "python": {
-    "distributionRecords": 60,
+    "distributionRecords": 61,
     "unknownLicenseMetadata": [],
     "packages": [
       {
@@ -1321,6 +1321,11 @@
         "name": "idna",
         "version": "3.18",
         "license": "BSD-3-Clause"
+      },
+      {
+        "name": "imageio-ffmpeg",
+        "version": "0.6.0",
+        "license": "BSD-2-Clause"
       },
       {
         "name": "importlib_metadata",
