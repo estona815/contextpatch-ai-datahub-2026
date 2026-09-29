@@ -1,0 +1,118 @@
+[
+  {
+    "name": "AdSpec validates current configuration and invalidates old approval",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "windly route",
+      "rule validation",
+      "current-input approval",
+      "invalid JSON guardrail",
+      "persistence",
+      "JSON import and export",
+      "fixture regression"
+    ],
+    "description": "Exercises AdSpec through approval, input change, error recovery and export using current data.",
+    "steps": [
+      "Open #/windly. Select 검수 통과 예시 in 검수 시나리오, then click 예시 불러오기.",
+      "Click 현재 명세 로컬 승인. Change 일예산 to 30001 and verify 재승인 필요; refresh and verify budget 30001 remains.",
+      "Expand 전체 JSON 편집 and replace the JSON with {. Verify JSON 오류 and disabled current report save. Restore 검수 통과 예시 through the scenario picker.",
+      "Save the current report, then use JSON 파일 가져오기 to upload a local JSON file containing {} and verify invalid input rather than approval.",
+      "Restore 검수 통과 예시 again. Open the regression section and run the fixture regression action."
+    ],
+    "expected": "Approval is invalidated by input changes; edited inputs persist after reload. Invalid JSON and {} cannot approve or claim readiness. Valid report downloads and the 11 regression fixture expectations pass."
+  },
+  {
+    "name": "FlowMap approval, replay prevention and traceable evidence",
+    "viewport": "desktop",
+    "covers": [
+      "interx route",
+      "workflow approval",
+      "idempotent replay",
+      "missing-data guardrail",
+      "time assumptions",
+      "report download",
+      "design/evidence navigation",
+      "source links"
+    ],
+    "description": "Checks workflow execution stays within the current approved input and exposes a useful report and context.",
+    "steps": [
+      "From #/ choose FlowMap. Restore 표준 흐름 복원 then click 검증하고 실행.",
+      "Verify approval wait, then click 현재 내용 승인하고 실행. Run again and verify replay does not add another delivered record.",
+      "Download 실행 보고서 Markdown. Choose 장비 ID 누락 in 실습 시나리오, execute and verify visible validation failure.",
+      "Change 주간 요청 수 in the assumption model and verify the calculated weekly time changes with its stated formula.",
+      "Use 과제와 설계 then 검증과 출처. Verify official source links and download 설명서 내려받기, then return to 직접 사용하기."
+    ],
+    "expected": "The approved standard workflow records one local delivery and replay adds none. Missing equipment blocks execution. Editable assumptions change the transparent estimate. Current reports and source-backed explanatory Markdown download."
+  },
+  {
+    "name": "Structured briefs and agent traces expose current validation evidence",
+    "viewport": "desktop",
+    "covers": [
+      "docenty route",
+      "brief traceability",
+      "review approval",
+      "stale result prevention",
+      "Markdown and JSON export",
+      "ensapia route",
+      "paired baseline-candidate comparison",
+      "event evidence",
+      "invalid trace guardrail"
+    ],
+    "description": "Checks structured requirements and agent execution records produce reviewable, input-bound evidence.",
+    "steps": [
+      "Open #/docenty, choose the complete review-ready sample in 시나리오 and click 선택한 예시 불러오기. Verify 9 checks pass.",
+      "Enter 검수자 in 검토 기록의 작성자 and click 현재 기준 검토 완료. Change 제품 제목 and verify 재검사 필요 and disabled 검사 근거 JSON.",
+      "Click 검사 실행 and download 브리프 Markdown and 검사 근거 JSON.",
+      "Open #/ensapia. With the initial scenario inspect 기준 기록 failure, switch to 후보 기록 and verify 범위 내 통과. Click an event to inspect its finding evidence.",
+      "Open JSON 직접 편집 and replace the candidate JSON with {. Verify 입력 오류 and disabled 비교 보고서 내려받기. Click 선택 예제로 초기화 then download the comparison report."
+    ],
+    "expected": "Complete brief passes9 checks; changing it invalidates review and stale evidence export. Re-execution creates current documents. AvatarOps compares the same synthetic scenario, exposes event evidence, rejects invalid JSON and restores working report export after reset."
+  },
+  {
+    "name": "StockBridge reconciles uploaded CSV and protects stale review on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "vibers route",
+      "CSV upload",
+      "column mapping",
+      "reconciliation arithmetic",
+      "duplicate and missing data",
+      "origin evidence",
+      "CSV and JSON downloads",
+      "review invalidation",
+      "mobile navigation"
+    ],
+    "description": "Uses an actual small CSV to confirm correct arithmetic, error handling and review invalidation on a narrow screen.",
+    "steps": [
+      "Open #/vibers at the mobile viewport. Initial sample should show7 data rows and4 unique records, USD17 and EUR55.5. Inspect a discrepancy with 근거 보기.",
+      "Upload a CSV named stock-check.csv with content: sku,region,expected_qty,counted_qty,unit_cost,currency\\nTEST-1,US,10,8,2.50,USD\\nTEST-2,KR,5,5,1000,KRW . Check CSV 열 연결 and click 대사 실행.",
+      "Verify2 unique records and USD5 discrepancy. Enter 검수자 and mark 현재 대사 검토 완료, then download 행별 결과 CSV and 대사 근거 JSON.",
+      "Edit counted_qty for TEST-1 from8 to9 in CSV 직접 편집. Verify prior review is invalid and downloads are disabled until 대사 실행; rerun and verify USD2.5.",
+      "Select 누락·중복·수량 차이가 있는 파일 and load it; confirm invalid records remain excluded. Navigate the mobile 검증과 출처 tab."
+    ],
+    "expected": "Uploaded content is actually parsed and maps to2 unique records. Review and exports bind current CSV; the edited discrepancy becomes USD2.5 after rerun. Invalid/duplicate rows are excluded and origin evidence remains available. Mobile controls and navigation are usable without page overflow."
+  },
+  {
+    "name": "FaultLab reproduces defects and verifies fixes on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "wisewires route",
+      "six independent defect scenarios",
+      "actual buggy/fixed execution",
+      "boundary inputs",
+      "issue report export",
+      "input invalidation",
+      "negative input",
+      "mobile layout"
+    ],
+    "description": "Checks real faulty and corrected functions against the same separate oracle and exports only an observed defect.",
+    "steps": [
+      "Open #/wisewires and use the all-scenarios run button with the default inputs. Verify6 reproduced defects and6 fixed passes.",
+      "Select the discount scenario. Compare 결함 포함 and 수정 적용: default payable should be -4000 and0. Download 재현 보고서 Markdown.",
+      "Set coupon/할인 amount to500. Verify the old result disappears, run the comparison again and confirm both variants pass and defect-report export is disabled.",
+      "Clear a numeric input, rerun and verify visible input errors without a PASS claim. Restore 현재 샘플 복원 and rerun to recover."
+    ],
+    "expected": "The six seeded faulty functions violate independent rules while corrected functions pass. Valid discount500 does not invent a defect. Missing numeric input yields an input error, and current failure reports include reproduction plus fixed-version evidence. Mobile controls remain usable."
+  }
+]
