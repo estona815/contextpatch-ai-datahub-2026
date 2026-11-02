@@ -4,6 +4,19 @@
 
 **[실행 사이트 열기](https://kwon-work-49mnyp.v2.appdeploy.ai/)** · [권준 GitHub](https://github.com/estona815) · [검증 기록](docs/RELEASE_REPORT.md)
 
+## 채용 검토 시작점
+
+**개인 시제품 · QA·테스트 / AI 업무자동화**
+
+| 먼저 볼 도구 | 확인할 판단 | 코드 |
+|---|---|---|
+| FaultLab | 같은 입력으로 결함·수정 비교, 현재 관측한 실패의 재현 보고서 | [엔진](src/modules/wisewires/engine.ts) · [테스트](tests/wisewires.test.mjs) |
+| StockBridge | 빈 수량·충돌 중복 보류, 원본 행 추적, 입력 변경 후 재검토 | [엔진](src/modules/vibers/engine.ts) · [테스트](tests/vibers.test.mjs) |
+
+2026-11-03 고정 소스의 기존 엔진·저장 경계 회귀 테스트 **112/112 통과**를 확인했습니다. [검증 범위와 실행 로그](https://github.com/estona815/engineering-portfolio/blob/main/docs/VALIDATION.md)
+
+[프로젝트 사례](https://github.com/estona815/engineering-portfolio/blob/main/case-studies/company-workbench.md) · [채용 포트폴리오](https://github.com/estona815/engineering-portfolio)
+
 ## 기업별 바로가기
 
 회사에 공유할 때는 아래 전용 주소를 사용하면 해당 과제의 작업 화면이 바로 열립니다. 화면의 **과제와 설계**, **검증과 출처**에서 선택 이유와 구현 범위를 확인할 수 있습니다.
